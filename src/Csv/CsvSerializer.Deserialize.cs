@@ -50,6 +50,7 @@ public static partial class CsvSerializer
     public static T[] Deserialize<T>(string str, CsvOptions? options = default)
     {
         var buffer = ArrayPool<byte>.Shared.Rent(Encoding.UTF8.GetByteCount(str));
+        Encoding.UTF8.GetBytes(str, buffer);
         try
         {
             return Deserialize<T>(new ReadOnlySequence<byte>(buffer), options);
@@ -63,6 +64,7 @@ public static partial class CsvSerializer
     public static int Deserialize<T>(string str, Span<T> destination, CsvOptions? options = default)
     {
         var buffer = ArrayPool<byte>.Shared.Rent(Encoding.UTF8.GetByteCount(str));
+        Encoding.UTF8.GetBytes(str, buffer);
         try
         {
             return Deserialize(new ReadOnlySequence<byte>(buffer), destination, options);
