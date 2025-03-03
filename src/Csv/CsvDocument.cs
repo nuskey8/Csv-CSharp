@@ -21,7 +21,6 @@ public sealed class CsvDocument
             var reader = new CsvReader(sequence, options);
             var allowComments = options.AllowComments;
 
-
             if (options.HasHeader)
             {
                 while (reader.Remaining > 0)
@@ -61,14 +60,14 @@ public sealed class CsvDocument
                 var length = reader.SkipField();
                 elements.Add(new(this, index, length));
 
-                if (reader.TryReadEndOfLine() || reader.Remaining == 0)
+                reader.TryReadSeparator(false);
+
+                if (reader.Remaining == 0 || reader.TryReadEndOfLine())
                 {
                     rows.Add(new(this, elements.AsSpan().ToArray()));
                     elements.Clear();
                     continue;
                 }
-
-                if (!reader.TryReadSeparator(false)) continue;
             }
 
             this.rows = rows.AsSpan().ToArray();
