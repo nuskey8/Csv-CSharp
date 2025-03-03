@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace Csv.Tests;
 
 public class CsvReaderTests
@@ -13,20 +15,22 @@ public class CsvReaderTests
     }
 
     [Test]
-    public void Test_ReadBoolean_True()
+    [TestCase("true")]
+    [TestCase("True")]
+    public void Test_ReadBoolean_True(string str)
     {
-        var x = @"true"u8;
-        var reader = new CsvReader(new(x.ToArray()), new());
+        var reader = new CsvReader(new(Encoding.UTF8.GetBytes(str)), new());
 
         var actual = reader.ReadBoolean();
         Assert.That(actual, Is.EqualTo(true));
     }
 
     [Test]
-    public void Test_ReadBoolean_False()
+    [TestCase("false")]
+    [TestCase("False")]
+    public void Test_ReadBoolean_False(string str)
     {
-        var x = @"false"u8;
-        var reader = new CsvReader(new(x.ToArray()), new());
+        var reader = new CsvReader(new(Encoding.UTF8.GetBytes(str)), new());
 
         var actual = reader.ReadBoolean();
         Assert.That(actual, Is.EqualTo(false));

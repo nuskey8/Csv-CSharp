@@ -33,20 +33,24 @@ public ref partial struct CsvReader
 
         if (reader.TryRead(out var c1))
         {
-            if (c1 == 't')
+            if (c1 is (byte)'t' or (byte)'T')
             {
                 if (!reader.TryRead(out var c2) || c2 != 'r') goto ERROR_TRUE;
                 if (!reader.TryRead(out var c3) || c3 != 'u') goto ERROR_TRUE;
                 if (!reader.TryRead(out var c4) || c4 != 'e') goto ERROR_TRUE;
                 return true;
             }
-            else if (c1 == 'f')
+            else if (c1 is (byte)'f' or (byte)'F')
             {
                 if (!reader.TryRead(out var c2) || c2 != 'a') goto ERROR_FALSE;
                 if (!reader.TryRead(out var c3) || c3 != 'l') goto ERROR_FALSE;
                 if (!reader.TryRead(out var c4) || c4 != 's') goto ERROR_FALSE;
                 if (!reader.TryRead(out var c5) || c5 != 'e') goto ERROR_FALSE;
                 return false;
+            }
+            else
+            {
+                CsvSerializationException.ThrowFailedEncoding();
             }
         }
         else
