@@ -37,19 +37,18 @@ public ref partial struct CsvReader
         if (IsNextSeparatorOrNewline()) return default;
 
         TrySkipQuotation();
-        {
-            if (reader.TryRead(out int intValue))
-            {
-                if (intValue is CsvConstants.trueBytesLittleEndian or CsvConstants.TrueBytesLittleEndian)
-                {
-                    return true;
-                }
 
-                if ((intValue is CsvConstants.falseBytesLittleEndian or CsvConstants.FalseBytesLittleEndian) &&
-                    reader.TryRead(out var c) && c == (byte)'e')
-                {
-                    return false;
-                }
+        if (reader.TryRead(out int intValue))
+        {
+            if (intValue is CsvConstants.trueBytesLittleEndian or CsvConstants.TrueBytesLittleEndian)
+            {
+                return true;
+            }
+
+            if (intValue is CsvConstants.falseBytesLittleEndian or CsvConstants.FalseBytesLittleEndian
+                && reader.TryRead(out var c) && c == (byte)'e')
+            {
+                return false;
             }
         }
 
@@ -63,19 +62,18 @@ public ref partial struct CsvReader
         if (IsNextSeparatorOrNewline()) return default;
 
         TrySkipQuotation();
-        {
-            if (reader.TryRead(out int intValue))
-            {
-                if (intValue is CsvConstants.trueBytesBigEndian or CsvConstants.TrueBytesBigEndian)
-                {
-                    return true;
-                }
 
-                if ((intValue is CsvConstants.falseBytesBigEndian or CsvConstants.FalseBytesBigEndian) &&
-                    reader.TryRead(out var c) && c == (byte)'e')
-                {
-                    return false;
-                }
+        if (reader.TryRead(out int intValue))
+        {
+            if (intValue is CsvConstants.trueBytesBigEndian or CsvConstants.TrueBytesBigEndian)
+            {
+                return true;
+            }
+
+            if (intValue is CsvConstants.falseBytesBigEndian or CsvConstants.FalseBytesBigEndian
+                && reader.TryRead(out var c) && c == (byte)'e')
+            {
+                return false;
             }
         }
 
