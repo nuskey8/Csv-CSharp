@@ -518,23 +518,23 @@ public partial class CsvSerializerGenerator : IIncrementalGenerator
 			builder.AppendLine("var allowComments = reader.Options.AllowComments;");
 			builder.AppendLine("while (reader.TryReadEndOfLine(true) || (allowComments && reader.TrySkipComment(false))) { }");
 
-			builder.AppendLine($"scoped Span<int> map = stackalloc int[{members.Count}];");
+			builder.AppendLine($"using var map = new global::Csv.Internal.TempList<int>();");
 			builder.AppendLine("var keyBuffer = new global::Csv.Internal.TempList<byte>();");
 			using (builder.BeginBlockScope("try"))
 			{
 				builder.AppendLine("var ___endOfLine = false;");
 
-				using (builder.BeginBlockScope($"for (int i = 0; i < {members.Count}; i++)"))
+				using (builder.BeginBlockScope($"while (reader.Remaining > 0)"))
 				{
 					builder.AppendLine("reader.ReadUtf8(ref keyBuffer);");
-					builder.AppendLine("map[i] = GetColumnIndex(keyBuffer.AsSpan());");
+					builder.AppendLine("map.Add(GetColumnIndex(keyBuffer.AsSpan()));");
 					builder.AppendLine("keyBuffer.Clear(false);");
 					using (builder.BeginBlockScope("if (reader.TryReadEndOfLine(true))"))
 					{
 						builder.AppendLine("___endOfLine = true;");
 						builder.AppendLine("break;");
 					}
-					builder.AppendLine($"if (i != {members.Count} - 1) reader.TryReadSeparator(false);");
+					builder.AppendLine("reader.TryReadSeparator(false);");
 				}
 
 				builder.AppendLine("if (!___endOfLine) reader.SkipLine();");
@@ -561,7 +561,7 @@ public partial class CsvSerializerGenerator : IIncrementalGenerator
 				EmitDeserializeLocalVariables(type, builder);
 				builder.AppendLine("var ___endOfLine = false;");
 
-				using (builder.BeginBlockScope("foreach (var ___i in map)"))
+				using (builder.BeginBlockScope("foreach (var ___i in map.AsSpan())"))
 				{
 					using (builder.BeginBlockScope("switch (___i)"))
 					{
@@ -622,7 +622,7 @@ public partial class CsvSerializerGenerator : IIncrementalGenerator
 				EmitDeserializeLocalVariables(type, builder);
 				builder.AppendLine("var ___endOfLine = false;");
 
-				using (builder.BeginBlockScope("foreach (var __i in map)"))
+				using (builder.BeginBlockScope("foreach (var __i in map.AsSpan())"))
 				{
 					using (builder.BeginBlockScope("switch (__i)"))
 					{
