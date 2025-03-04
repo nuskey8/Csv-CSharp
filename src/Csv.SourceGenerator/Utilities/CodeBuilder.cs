@@ -48,7 +48,7 @@ internal sealed class CodeBuilder
     {
         if (indent)
         {
-            buffer.Append($"{new string(' ', indentLevel * 4)} {value}");
+            buffer.Append($"{new string('\t', indentLevel)} {value}");
         }
         else
         {
@@ -64,7 +64,7 @@ internal sealed class CodeBuilder
         }
         else if (indent)
         {
-            buffer.AppendLine($"{new string(' ', indentLevel * 4)} {value}");
+            buffer.AppendLine($"{new string('\t', indentLevel)} {value}");
         }
         else
         {
