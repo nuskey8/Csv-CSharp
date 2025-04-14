@@ -26,46 +26,59 @@ public ref partial struct CsvReader
 
     public bool ReadBoolean()
     {
+        return BitConverter.IsLittleEndian
+            ? ReadBooleanLittleEndian()
+            : ReadBooleanBigEndian();
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    bool ReadBooleanLittleEndian()
+    {
         if (IsNextSeparatorOrNewline()) return default;
-        SkipWhitespace();
 
         TrySkipQuotation();
 
-        if (reader.TryRead(out var c1))
+        if (reader.TryRead(out int intValue))
         {
-            if (c1 is (byte)'t' or (byte)'T')
+            if (intValue is CsvConstants.trueBytesLittleEndian or CsvConstants.TrueBytesLittleEndian)
             {
-                if (!reader.TryRead(out var c2) || c2 != 'r') goto ERROR_TRUE;
-                if (!reader.TryRead(out var c3) || c3 != 'u') goto ERROR_TRUE;
-                if (!reader.TryRead(out var c4) || c4 != 'e') goto ERROR_TRUE;
                 return true;
             }
-            else if (c1 is (byte)'f' or (byte)'F')
+
+            if (intValue is CsvConstants.falseBytesLittleEndian or CsvConstants.FalseBytesLittleEndian
+                && reader.TryRead(out var c) && c == (byte)'e')
             {
-                if (!reader.TryRead(out var c2) || c2 != 'a') goto ERROR_FALSE;
-                if (!reader.TryRead(out var c3) || c3 != 'l') goto ERROR_FALSE;
-                if (!reader.TryRead(out var c4) || c4 != 's') goto ERROR_FALSE;
-                if (!reader.TryRead(out var c5) || c5 != 'e') goto ERROR_FALSE;
                 return false;
             }
-            else
-            {
-                CsvSerializationException.ThrowFailedEncoding();
-            }
         }
-        else
-        {
-            CsvSerializationException.ThrowFailedEncoding();
-        }
+
+        CsvSerializationException.ThrowFailedEncoding();
+        return false;
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    bool ReadBooleanBigEndian()
+    {
+        if (IsNextSeparatorOrNewline()) return default;
 
         TrySkipQuotation();
 
-    ERROR_TRUE:
-    ERROR_FALSE:
-        CsvSerializationException.ThrowFailedEncoding();
+        if (reader.TryRead(out int intValue))
+        {
+            if (intValue is CsvConstants.trueBytesBigEndian or CsvConstants.TrueBytesBigEndian)
+            {
+                return true;
+            }
 
-        // dummy
-        return default;
+            if (intValue is CsvConstants.falseBytesBigEndian or CsvConstants.FalseBytesBigEndian
+                && reader.TryRead(out var c) && c == (byte)'e')
+            {
+                return false;
+            }
+        }
+
+        CsvSerializationException.ThrowFailedEncoding();
+        return false;
     }
 
     public char ReadChar()
@@ -299,7 +312,7 @@ public ref partial struct CsvReader
             reader.AdvanceToEnd();
 #endif
         }
-        
+
         reader.TryRead(out var c1);
         if (c1 == '\r' && reader.TryPeek(out var c2) && c2 == '\n')
         {

@@ -2,6 +2,7 @@ using System.Buffers;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
+using Csv.Internal;
 
 namespace Csv;
 
@@ -54,25 +55,28 @@ public ref partial struct CsvWriter
 
     public void WriteBoolean(bool value)
     {
+        if (BitConverter.IsLittleEndian) WriteBooleanLittleEndian(value);
+        else WriteBooleanBigEndian(value);
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    void WriteBooleanBigEndian(bool value)
+    {
         if (options.QuoteMode is QuoteMode.Minimal or QuoteMode.None)
         {
             if (value)
             {
                 var span = GetSpan(4);
-                span[0] = (byte)'t';
-                span[1] = (byte)'r';
-                span[2] = (byte)'u';
-                span[3] = (byte)'e';
+                ref var first = ref MemoryMarshal.GetReference(span);
+                Unsafe.WriteUnaligned(ref first, CsvConstants.trueBytesBigEndian);
                 Advance(4);
             }
             else
             {
                 var span = GetSpan(5);
-                span[0] = (byte)'f';
-                span[1] = (byte)'a';
-                span[2] = (byte)'l';
-                span[3] = (byte)'s';
-                span[4] = (byte)'e';
+                ref var first = ref MemoryMarshal.GetReference(span);
+                Unsafe.WriteUnaligned(ref first, CsvConstants.falseBytesBigEndian);
+                Unsafe.Add(ref first, 4) = (byte)'e';
                 Advance(5);
             }
         }
@@ -81,24 +85,61 @@ public ref partial struct CsvWriter
             if (value)
             {
                 var span = GetSpan(6);
-                span[0] = (byte)'"';
-                span[1] = (byte)'t';
-                span[2] = (byte)'r';
-                span[3] = (byte)'u';
-                span[4] = (byte)'e';
-                span[5] = (byte)'"';
+                ref var first = ref MemoryMarshal.GetReference(span);
+                Unsafe.WriteUnaligned(ref first, ((byte)'"' << 24) | (CsvConstants.trueBytesBigEndian >> 8));
+                Unsafe.WriteUnaligned(ref Unsafe.Add(ref first, 4), (short)((byte)'e' << 8 | ((byte)'"')));
                 Advance(6);
             }
             else
             {
                 var span = GetSpan(7);
-                span[0] = (byte)'"';
-                span[1] = (byte)'f';
-                span[2] = (byte)'a';
-                span[3] = (byte)'l';
-                span[4] = (byte)'s';
-                span[5] = (byte)'e';
-                span[6] = (byte)'"';
+                ref var first = ref MemoryMarshal.GetReference(span);
+                Unsafe.WriteUnaligned(ref first, ((byte)'"' << 24) | (CsvConstants.falseBytesBigEndian >> 8));
+                Unsafe.WriteUnaligned(ref Unsafe.Add(ref first, 4), (short)((byte)'s' << 8 | ((byte)'e')));
+                Unsafe.Add(ref first, 6) = (byte)'"';
+                Advance(7);
+            }
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    void WriteBooleanLittleEndian(bool value)
+    {
+        if (options.QuoteMode is QuoteMode.Minimal or QuoteMode.None)
+        {
+            if (value)
+            {
+                var span = GetSpan(4);
+                ref var first = ref MemoryMarshal.GetReference(span);
+                Unsafe.As<byte, int>(ref first) = CsvConstants.trueBytesLittleEndian;
+                Advance(4);
+            }
+            else
+            {
+                var span = GetSpan(5);
+                ref var first = ref MemoryMarshal.GetReference(span);
+                Unsafe.As<byte, int>(ref first) = CsvConstants.falseBytesLittleEndian;
+                Unsafe.Add(ref first, 4) = (byte)'e';
+                Advance(5);
+            }
+        }
+        else
+        {
+            if (value)
+            {
+                var span = GetSpan(6);
+                ref var first = ref MemoryMarshal.GetReference(span);
+                Unsafe.WriteUnaligned(ref first, ((byte)'"') | (CsvConstants.trueBytesLittleEndian << 8));
+                Unsafe.WriteUnaligned(ref Unsafe.Add(ref first, 4), (short)((byte)'e' | ((byte)'"' << 8)));
+                Advance(6);
+            }
+            else
+            {
+                var span = GetSpan(7);
+                ref var first = ref MemoryMarshal.GetReference(span);
+                Unsafe.WriteUnaligned(ref first, ((byte)'"') | (CsvConstants.falseBytesLittleEndian << 8));
+                Unsafe.WriteUnaligned(ref Unsafe.Add(ref first, 4), (short)((byte)'s' | ((byte)'e' << 8)));
+                Unsafe.Add(ref first, 6) = (byte)'"';
                 Advance(7);
             }
         }
@@ -109,7 +150,7 @@ public ref partial struct CsvWriter
     {
         WriteString([value]);
     }
-    
+
     public void WriteString(scoped ReadOnlySpan<char> value)
     {
         // TODO: optimize

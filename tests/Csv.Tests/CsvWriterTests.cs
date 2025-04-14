@@ -83,4 +83,18 @@ public class CsvWriterTests
         csvWriter.WriteString("f\"oo");
         Assert.That(Encoding.UTF8.GetString(bufferWriter.WrittenSpan), Is.EqualTo(@"""f""""oo"""));
     }
+
+    [Test]
+    [TestCase(true, "true", QuoteMode.None)]
+    [TestCase(false, "false", QuoteMode.None)]
+    [TestCase(true, "\"true\"", QuoteMode.All)]
+    [TestCase(false, "\"false\"", QuoteMode.All)]
+    public void Test_WriteBoolean(bool b, string str, QuoteMode quoteMode)
+    {
+        var bufferWriter = new ArrayBufferWriter<byte>();
+        var csvWriter = new CsvWriter(bufferWriter, new() { QuoteMode = quoteMode });
+
+        csvWriter.WriteBoolean(b);
+        Assert.That(Encoding.UTF8.GetString(bufferWriter.WrittenSpan), Is.EqualTo(str));
+    }
 }
