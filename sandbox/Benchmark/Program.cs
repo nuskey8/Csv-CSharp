@@ -31,10 +31,16 @@ public partial record Numbers
 {
     [Column(0)]
     public int Alpha { get; set; }
-
     [Column(1)]
     public int Beta { get; set; }
-
     [Column(2)]
+    public int Gamma { get; set; }
+}
+
+[CsvObject(true)]
+public partial record NumbersStringKey
+{
+    public int Alpha { get; set; }
+    public int Beta { get; set; }
     public int Gamma { get; set; }
 }
