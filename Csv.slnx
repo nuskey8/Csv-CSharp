@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/sandbox/">
+    <Project Path="sandbox/Benchmark/Benchmark.csproj" />
+    <Project Path="sandbox/ConsoleApp1/ConsoleApp1.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Csv.Annotations/Csv.Annotations.csproj" />
+    <Project Path="src/Csv.SourceGenerator/Csv.SourceGenerator.csproj" />
+    <Project Path="src/Csv/Csv.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Csv.Tests/Csv.Tests.csproj" />
+  </Folder>
+</Solution>
