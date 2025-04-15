@@ -2,6 +2,9 @@
 
 [![NuGet](https://img.shields.io/nuget/v/CsvCSharp.svg)](https://www.nuget.org/packages/CsvCSharp)
 [![Releases](https://img.shields.io/github/release/nuskey8/Csv-CSharp.svg)](https://github.com/nuskey8/Csv-CSharp/releases)
+[![GitHub license](https://img.shields.io/github/license/nuskey8/Csv-CSharp.svg)](./LICENSE)
+
+[English]((./README.md)) | 日本語
 
 ![img](docs/img1.png)
 

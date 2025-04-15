@@ -1,7 +1,10 @@
 # Csv-CSharp
 
 [![NuGet](https://img.shields.io/nuget/v/CsvCSharp.svg)](https://www.nuget.org/packages/CsvCSharp)
-[![Releases](https://img.shields.io/github/release/AnnulusGames/Csv-CSharp.svg)](https://github.com/AnnulusGames/Csv-CSharp/releases)
+[![Releases](https://img.shields.io/github/release/nuskey8/Csv-CSharp.svg)](https://github.com/nuskey8/Csv-CSharp/releases)
+[![GitHub license](https://img.shields.io/github/license/nuskey8/Csv-CSharp.svg)](./LICENSE)
+
+English | [日本語](./README_JA.md)
 
 ![img](docs/img1.png)
 
