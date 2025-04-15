@@ -234,8 +234,6 @@ public class CustomFormatterProvider : ICsvFormatterProvider
 作成したFormatterProviderはCsvOptionsにセットできます。上の`CustomFormatterProvider`は`Foo`構造体にのみ対応したものであるため、標準のFormatterProviderである`StandardFormatterProvider`と組み合わせて使用します。
 
 ```cs
-var array = new Foo[10];
-
 // CompositeFormatterProviderで複数のFormatterProviderをまとめたFormatterProviderを作成する
 var provider = CompositeFormatterProvider.Create(
     CustomFormatterProvider.Instance,

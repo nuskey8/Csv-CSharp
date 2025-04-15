@@ -234,8 +234,6 @@ public class CustomFormatterProvider : ICsvFormatterProvider
 You can set the created formatter provider in CsvOptions. The above `CustomFormatterProvider` only supports the `Foo` struct, so combine it with the standard formatter provider `StandardFormatterProvider`.
 
 ```cs
-var array = new Foo[10];
-
 // Create a composite formatter provider combining multiple formatter providers
 var provider = CompositeFormatterProvider.Create(
     CustomFormatterProvider.Instance,
