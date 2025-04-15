@@ -1,0 +1,15 @@
+<Project>
+
+    <PropertyGroup>
+        <!-- NuGet Packaging -->
+        <PackageVersion>1.0.0</PackageVersion>
+        <Authors>nuskey</Authors>
+        <Copyright>© Yusuke Nakada</Copyright>
+        <PackageProjectUrl>https://github.com/nuskey8/Csv-CSharp</PackageProjectUrl>
+        <RepositoryUrl>$(PackageProjectUrl)</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+
+</Project>

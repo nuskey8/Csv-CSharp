@@ -14,7 +14,6 @@
 		<SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
 
     <PackageId>CsvCSharp.SourceGenerator</PackageId>
-    <Version>0.1.6</Version>
     <Description>A source Generator for Csv-CSharp serialization.</Description>
   </PropertyGroup>
 

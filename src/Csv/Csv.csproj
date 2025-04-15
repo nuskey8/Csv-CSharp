@@ -22,17 +22,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
-    <Version>0.1.6</Version>
     <PackageId>CsvCSharp</PackageId>
-    <Authors>Annulus Games</Authors>
-    <Copyright>© Annulus Games</Copyright>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageTags>CSV;Parser;Serializer;Unity;</PackageTags>
     <Description>Fast CSV Serializer for .NET and Unity.</Description>
-    <PackageProjectUrl>https://github.com/AnnulusGames/Csv-CSharp</PackageProjectUrl>
-    <RepositoryUrl>$(PackageProjectUrl)</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
 </Project>

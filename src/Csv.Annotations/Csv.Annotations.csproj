@@ -7,19 +7,13 @@
     <Nullable>enable</Nullable>
 
     <PackageId>CsvCSharp.Annotations</PackageId>
-    <Version>0.1.6</Version>
-    <Authors>Annulus Games</Authors>
-    <Copyright>© Annulus Games</Copyright>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageTags>CSV;Parser;Serializer;Unity;</PackageTags>
     <Description>Attributes and interfaces for Csv-CSharp serialization.</Description>
-    <PackageProjectUrl>https://github.com/AnnulusGames/Csv-CSharp</PackageProjectUrl>
-    <RepositoryUrl>$(PackageProjectUrl)</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="..\..\LICENSE" Pack="true" PackagePath=""/>
+    <None Include="..\..\README.md" Pack="true" PackagePath="README.md"/>
   </ItemGroup>
 
 </Project>
