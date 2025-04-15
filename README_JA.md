@@ -1,7 +1,7 @@
 # Csv-CSharp
 
 [![NuGet](https://img.shields.io/nuget/v/CsvCSharp.svg)](https://www.nuget.org/packages/CsvCSharp)
-[![Releases](https://img.shields.io/github/release/AnnulusGames/Csv-CSharp.svg)](https://github.com/AnnulusGames/Csv-CSharp/releases)
+[![Releases](https://img.shields.io/github/release/nuskey8/Csv-CSharp.svg)](https://github.com/nuskey8/Csv-CSharp/releases)
 
 ![img](docs/img1.png)
 
@@ -123,9 +123,6 @@ public partial class Person
     public int Age { get; set; }
 }
 ```
-
-> [!NOTE]
-> 現在コンストラクタを指定するDeserializeは未実装であり、`[CsvObject]`をマークした型にはパラメータなしのコンストラクタが必要です。この機能はv1.0までに実装される予定です。
 
 ## CsvDocument
 

@@ -124,9 +124,6 @@ public partial class Person
 }
 ```
 
-> [!NOTE]
-> Currently, deserialization with a specified constructor is not implemented. Types marked with `[CsvObject]` require a parameterless constructor. This feature is expected to be implemented by version 1.0.
-
 ## CsvDocument
 
 If you need to directly parse CSV fields, you can use `CsvDocument`.
