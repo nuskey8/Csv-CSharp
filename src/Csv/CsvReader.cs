@@ -40,15 +40,19 @@ public ref partial struct CsvReader
 
         if (reader.TryRead(out int intValue))
         {
-            if (intValue is CsvConstants.trueBytesLittleEndian or CsvConstants.TrueBytesLittleEndian)
+            switch (intValue)
             {
-                return true;
-            }
-
-            if (intValue is CsvConstants.falseBytesLittleEndian or CsvConstants.FalseBytesLittleEndian
-                && reader.TryRead(out var c) && c == (byte)'e')
-            {
-                return false;
+                case CsvConstants.trueBytesLittleEndian:
+                case CsvConstants.TrueBytesLittleEndian:
+                case CsvConstants.TRUEBytesLittleEndian:
+                    return true;
+                case CsvConstants.falseBytesLittleEndian:
+                case CsvConstants.FalseBytesLittleEndian:
+                    if (reader.TryRead(out var c) && c is (byte)'e') return false;
+                    break;
+                case CsvConstants.FALSEBytesLittleEndian:
+                    if (reader.TryRead(out var c2) && c2 is (byte)'E') return false;
+                    break;
             }
         }
 
@@ -65,15 +69,19 @@ public ref partial struct CsvReader
 
         if (reader.TryRead(out int intValue))
         {
-            if (intValue is CsvConstants.trueBytesBigEndian or CsvConstants.TrueBytesBigEndian)
+            switch (intValue)
             {
-                return true;
-            }
-
-            if (intValue is CsvConstants.falseBytesBigEndian or CsvConstants.FalseBytesBigEndian
-                && reader.TryRead(out var c) && c == (byte)'e')
-            {
-                return false;
+                case CsvConstants.TRUEBytesBigEndian:
+                case CsvConstants.TrueBytesBigEndian:
+                case CsvConstants.trueBytesBigEndian:
+                    return true;
+                case CsvConstants.FALSEBytesBigEndian:
+                case CsvConstants.FalseBytesBigEndian:
+                    if (reader.TryRead(out var c) && c is (byte)'E') return false;
+                    break;
+                case CsvConstants.falseBytesBigEndian:
+                    if (reader.TryRead(out var c2) && c2 is (byte)'e') return false;
+                    break;
             }
         }
 
