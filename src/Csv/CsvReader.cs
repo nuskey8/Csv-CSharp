@@ -75,12 +75,12 @@ public ref partial struct CsvReader
                 case CsvConstants.TrueBytesBigEndian:
                 case CsvConstants.trueBytesBigEndian:
                     return true;
-                case CsvConstants.FALSEBytesBigEndian:
-                case CsvConstants.FalseBytesBigEndian:
-                    if (reader.TryRead(out var c) && c is (byte)'E') return false;
-                    break;
                 case CsvConstants.falseBytesBigEndian:
+                case CsvConstants.FalseBytesBigEndian:
                     if (reader.TryRead(out var c2) && c2 is (byte)'e') return false;
+                    break;
+                case CsvConstants.FALSEBytesBigEndian:
+                    if (reader.TryRead(out var c) && c is (byte)'E') return false;
                     break;
             }
         }
