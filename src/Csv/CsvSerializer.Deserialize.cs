@@ -118,7 +118,7 @@ public static partial class CsvSerializer
             builder.Reset();
         }
     }
-    
+
     public static async ValueTask<T[]> DeserializeAsync<T>(Stream stream, CsvOptions? options = default, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();

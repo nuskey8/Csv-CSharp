@@ -21,7 +21,7 @@ public partial record Person
 {
     [Column(0)]
     public string? Name { get; set; }
-    
+
     [Column(1)]
     public int Age { get; set; }
 }

@@ -9,7 +9,7 @@ public class CsvDocumentTests
     {
         var csv =
 @"Name,Age
-Alex,21  
+Alex,21
 Bob,35
 Charles,17"u8;
 
@@ -37,7 +37,7 @@ Charles,17"u8;
     {
         var csv =
 @"Name,Age
-Alex,21  
+Alex,21
 Bob,35
 Charles,17"u8;
 

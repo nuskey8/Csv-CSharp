@@ -10,7 +10,7 @@ public class SerializeTests
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
-        
+
     }
 
     [Test]
@@ -92,7 +92,7 @@ Charles,17"u8;
 
         User[] actual = new User[3];
         CsvSerializer.Deserialize<User>(new ReadOnlySequence<byte>(csv.ToArray()), actual);
-        
+
         User[] expected = [
             new() { Name = "Alex", Age = 21 },
             new() { Name = "Bob", Age = 35 },

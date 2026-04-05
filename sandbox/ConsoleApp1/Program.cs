@@ -26,7 +26,7 @@ public partial record Person
 
     [Column(1)]
     public int Age { get; init; }
-    
+
     [Column(2)]
     public Gender Gender { get; init; }
 }

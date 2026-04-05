@@ -45,7 +45,7 @@ public readonly record struct CsvRow
             return elements[index];
         }
     }
-    
+
     public CsvElement this[string key]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
