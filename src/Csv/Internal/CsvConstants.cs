@@ -1,4 +1,4 @@
-﻿namespace Csv.Internal;
+namespace Csv.Internal;
 
 internal static class CsvConstants
 {
