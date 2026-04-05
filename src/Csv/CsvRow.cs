@@ -16,10 +16,7 @@ public readonly record struct CsvHeader
     public CsvElement this[int index]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get
-        {
-            return elements[index];
-        }
+        get => elements[index];
     }
 }
 
@@ -40,18 +37,12 @@ public readonly record struct CsvRow
     public CsvElement this[int index]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get
-        {
-            return elements[index];
-        }
+        get => elements[index];
     }
 
     public CsvElement this[string key]
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get
-        {
-            return elements[document.columnCache[key]];
-        }
+        get => elements[document.columnCache[key]];
     }
 }

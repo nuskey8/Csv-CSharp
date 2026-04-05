@@ -17,7 +17,7 @@ public partial class CsvSerializerGenerator : IIncrementalGenerator
                         or StructDeclarationSyntax
                         or RecordDeclarationSyntax;
                 },
-                static (context, cancellation) => { return context; })
+                static (context, cancellation) => context)
             .Combine(context.CompilationProvider)
             .WithComparer(Comparer.Instance);
 

@@ -31,20 +31,17 @@ internal sealed class MemberMetadata
         Index = sequentialOrder;
 
         var columnAttribute = symbol.GetAttribute(references.ColumnAttribute);
-        if (columnAttribute != null)
+        if (columnAttribute is { ConstructorArguments.Length: > 0 })
         {
-            if (columnAttribute.ConstructorArguments.Length > 0)
+            var value = columnAttribute.ConstructorArguments[0].Value;
+            if (value is int i)
             {
-                var value = columnAttribute.ConstructorArguments[0].Value;
-                if (value is int i)
-                {
-                    Index = i;
-                }
-                else if (value is string s)
-                {
-                    Key = s;
-                    IsStringKey = true;
-                }
+                Index = i;
+            }
+            else if (value is string s)
+            {
+                Key = s;
+                IsStringKey = true;
             }
         }
 
