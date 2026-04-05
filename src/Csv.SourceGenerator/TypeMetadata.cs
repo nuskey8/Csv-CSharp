@@ -15,7 +15,7 @@ internal record class TypeMetadata
 
     public IReadOnlyList<MemberMetadata> Members => members ??= GetSerializeMembers();
 
-    ReferenceSymbols references;
+    readonly ReferenceSymbols references;
     MemberMetadata[]? members;
 
     public TypeMetadata(
