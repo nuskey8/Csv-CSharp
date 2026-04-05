@@ -4,14 +4,14 @@ namespace Csv.SourceGenerator;
 
 static class SymbolExtensions
 {
-    public static bool ContainsAttribute(this ISymbol symbol, INamedTypeSymbol attribtue)
+    public static bool ContainsAttribute(this ISymbol symbol, INamedTypeSymbol attribute)
     {
-        return symbol.GetAttributes().Any(x => SymbolEqualityComparer.Default.Equals(x.AttributeClass, attribtue));
+        return symbol.GetAttributes().Any(x => SymbolEqualityComparer.Default.Equals(x.AttributeClass, attribute));
     }
 
-    public static AttributeData? GetAttribute(this ISymbol symbol, INamedTypeSymbol attribtue)
+    public static AttributeData? GetAttribute(this ISymbol symbol, INamedTypeSymbol attribute)
     {
-        return symbol.GetAttributes().FirstOrDefault(x => SymbolEqualityComparer.Default.Equals(x.AttributeClass, attribtue));
+        return symbol.GetAttributes().FirstOrDefault(x => SymbolEqualityComparer.Default.Equals(x.AttributeClass, attribute));
     }
 
     public static IEnumerable<ISymbol> GetAllMembers(this INamedTypeSymbol symbol, bool withoutOverride = true)
