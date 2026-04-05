@@ -1,5 +1,3 @@
-using System.Text;
-
 namespace Csv.Tests;
 
 public class CsvDocumentTests

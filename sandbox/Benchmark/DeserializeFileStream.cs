@@ -2,7 +2,6 @@ using BenchmarkDotNet.Attributes;
 using Csv;
 using CsvHelper.Configuration;
 using nietras.SeparatedValues;
-using ServiceStack;
 using System.Globalization;
 
 [Config(typeof(BenchmarkConfig))]
