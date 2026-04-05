@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10.0.x
-      - run: dotnet format --verify-no-changes
+      - run: dotnet format Csv.slnx --verify-no-changes
 
   test:
     runs-on: ubuntu-latest
