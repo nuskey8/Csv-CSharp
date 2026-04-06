@@ -36,9 +36,9 @@ public sealed class StandardFormatterProvider : ICsvFormatterProvider
             goto RETURN;
         }
 
-        if (typeof(T).GetGenericTypeDefinition() == typeof(Nullable<>))
+        if (typeof(T).IsGenericType && typeof(T).GetGenericTypeDefinition() == typeof(Nullable<>))
         {
-            Cache<T>.value = (ICsvFormatter<T>)Activator.CreateInstance(typeof(NullableFormatter<>).MakeGenericType(typeof(T)))!;
+            Cache<T>.value = (ICsvFormatter<T>)Activator.CreateInstance(typeof(NullableFormatter<>).MakeGenericType(Nullable.GetUnderlyingType(typeof(T))!))!;
             goto RETURN;
         }
 
