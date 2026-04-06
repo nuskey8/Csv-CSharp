@@ -8,7 +8,7 @@
 
 ![img](docs/img1.png)
 
-Csv-CSharpは.NET、Unity向けの非常に高速なcsv(tsv)パーサです。UTF-8バイナリを直接解析する設計とSource Generatorの活用により、ゼロ(または非常に少ない)アロケーションでcsv(tsv)とオブジェクト配列間のシリアライズ/デシリアライズを可能にします。
+Csv-CSharpは.NET、Unity向けの非常に高速なCSV(TSV)パーサです。UTF-8バイト配列を直接解析する設計とSource Generatorの活用により、ゼロ(または非常に少ない)アロケーションでCSV(TSV)とオブジェクト配列間のシリアライズおよびデシリアライズを可能にします。
 
 ## インストール
 
@@ -30,13 +30,13 @@ Install-Package CsvCSharp
 
 ### Unity
 
-[NugetForUnity](https://github.com/GlitchEnzo/NuGetForUnity)を利用することで、Csv-CSharpをUnityでインストールできます。詳細はNugetForUnityのREADMEを参照してください。
+[NuGetForUnity](https://github.com/GlitchEnzo/NuGetForUnity)を利用することで、Csv-CSharpをUnityにインストールできます。詳細はNuGetForUnityのREADMEを参照してください。
 
 ## クイックスタート
 
-Csv-CSharpはcsvをclass/structの配列としてシリアライズ/デシリアライズします。
+Csv-CSharpはCSVデータをclassまたはstructの配列としてシリアライズおよびデシリアライズします。
 
-class/structを定義し、`[CsvObject]`属性とpartialキーワードを付加します。
+classまたはstructを定義し、`[CsvObject]`属性と`partial`キーワードを付加します。
 
 ```cs
 [CsvObject]
@@ -50,7 +50,7 @@ public partial class Person
 }
 ```
 
-`[CsvObject]`属性でマークした型のpublicなフィールド/プロパティは全て`[Column]`または`[IgnoreMember]`属性を付加する必要があります。(どちらの属性も見つからないメンバーにはAnalyzerがコンパイルエラーを出力します。)
+`[CsvObject]`属性でマークした型のpublicなフィールドおよびプロパティには全て`[Column]`または`[IgnoreMember]`属性を付加する必要があります。(どちらの属性も見つからないメンバーにはAnalyzerがコンパイルエラーを報告します。)
 
 `[Column]`にはint型で列のインデックスを指定するか、string型でヘッダ名を指定することができます。
 
@@ -62,7 +62,7 @@ var array = new Person[]
     new() { Name = "Alice", Age = 18 },
     new() { Name = "Bob", Age = 23 },
     new() { Name = "Carol", Age = 31 },
-}
+};
 
 // Person[] -> CSV (UTF-8)
 byte[] csv = CsvSerializer.Serialize(array);
@@ -77,32 +77,32 @@ array = CsvSerializer.Deserialize<Person>(csv);
 array = CsvSerializer.Deserialize<Person>(csvText);
 ```
 
-SerializeはUTF-8でエンコードされた`byte[]`を返すオーバーロードのほか、`Stream`や`IBufferWriter<byte>`を渡して書き込みを行うことも可能です。DeserializeはUTF-8バイト配列の`byte[]`を受け取るほか、`string`、`Stream`、`ReadOnlySequence<byte>`にも対応しています。
+`Serialize`はUTF-8でエンコードされた`byte[]`を返すオーバーロードのほか、`Stream`や`IBufferWriter<byte>`を渡して書き込みを行うことも可能です。`Deserialize`はUTF-8バイト配列の`byte[]`を受け取るほか、`string`、`Stream`、`ReadOnlySequence<byte>`にも対応しています。
 
-フィールドに含める型は、デフォルトでは`sbyte`, `byte`, `short`, `ushort`, `int`, `uint`, `long`, `ulong`, `char`, `string`, `Enum`, `Nullable<T>`, `DateTime`, `TimeSpan`, `Guid`に対応しています。これ以外の型に対応したい場合は機能拡張のセクションを参照してください。
+フィールドおよびプロパティに使用できる型は、デフォルトでは`sbyte`, `byte`, `short`, `ushort`, `int`, `uint`, `long`, `ulong`, `char`, `string`, `Enum`, `Nullable<T>`, `DateTime`, `TimeSpan`, `Guid`に対応しています。これ以外の型に対応したい場合は機能拡張のセクションを参照してください。
 
 ## シリアライズ
 
-`CsvSerializer`に渡すclass/structには`[CsvObject]`属性とpartialキーワードを付加します。
+`CsvSerializer`に渡すclassまたはstructには`[CsvObject]`属性と`partial`キーワードを付加します。
 
-デフォルトでは`[Column]`属性が付加されたフィールドとプロパティがSerialize/Deserialzeの対象になります。publicなメンバーには属性が必須ですが、`[Column]`属性を付加すればprivateメンバーを対象にすることも可能です。
+`[Column]`属性が付加されたメンバーのみがシリアライズおよびデシリアライズの対象になります。publicメンバーには`[Column]`または`[IgnoreMember]`が必須で、どちらもない場合はAnalyzerがコンパイルエラーを報告します。privateメンバーはデフォルトでは無視されますが、`[Column]`属性を付加することで対象に含めることができます。
 
 ```cs
 [CsvObject]
 public partial class Person
 {
     [Column(0)]
-    public string Name { get; set; }
+    public string Name { get; set; } // シリアライズ対象 (public、[Column]が必須)
 
     [Column(1)]
-    int age;
+    int age; // シリアライズ対象 (private、[Column]で明示的に指定)
 
     [IgnoreMember]
-    public int Age => age;
+    public int Age => age; // シリアライズ対象外 ([IgnoreMember]で除外)
 }
 ```
 
-インデックスではなくヘッダ名を指定したい場合は文字列をキーに指定します。
+インデックスではなくヘッダ名を指定したい場合は、ヘッダ名を文字列で渡します。
 
 ```cs
 [CsvObject]
@@ -116,7 +116,7 @@ public partial class Person
 }
 ```
 
-メンバー名をそのままキーとして使用する場合は`[CsvObject(keyAsPropertyName: true)]`を指定します。この場合、`[Column]`属性は必要ありません。
+メンバー名をそのままカラム名として使用する場合は`[CsvObject(keyAsPropertyName: true)]`を指定します。この場合、`[Column]`属性は必要ありません。
 
 ```cs
 [CsvObject(keyAsPropertyName: true)]
@@ -137,7 +137,7 @@ var array = new Person[]
     new() { Name = "Alice", Age = 18 },
     new() { Name = "Bob", Age = 23 },
     new() { Name = "Carol", Age = 31 },
-}
+};
 
 byte[] csv = CsvSerializer.Serialize(array);
 
@@ -159,26 +159,26 @@ Serialize/Deserializeに`CsvOptions`を渡すことでcsvの設定を変更す�
 CsvSerializer.Serialize(array, new CsvOptions()
 {
     HasHeader = true, // ヘッダ行を含むか
-    AllowComments = true, // #から始まるコメントを許可するか
+    AllowComments = true, // '#'から始まるコメントを許可するか
     NewLine = NewLineType.LF, // 改行コード
     Separator = SeparatorType.Comma, // 区切り文字
-    QuoteMode = QuoteMode.Minimal, // フィールドをダブルクォーテーションで囲む条件 (Minimalはエスケープ文字を含む文字列のみエスケープ)
+    QuoteMode = QuoteMode.Minimal, // フィールドをダブルクォーテーションで囲む条件 (Minimalはエスケープが必要な文字を含むフィールドのみ囲む)
     FormatterProvider = StandardFormatterProvider.Instance, // 使用するICsvFormatterProvider
 });
 ```
 
 ## CSVの仕様
 
-Csv-CSharpのデフォルトの設定は概ね[RFC 4180](https://www.rfc-editor.org/rfc/rfc4180.html)で規定された仕様に従いますが、パフォーマンスや実用性の観点から一部の仕様を無視することに注意してください。
+Csv-CSharpのデフォルトの設定は概ね[RFC 4180](https://www.rfc-editor.org/rfc/rfc4180.html)で規定された仕様に従いますが、パフォーマンスや実用性の観点から、いくつかの意図的な逸脱があります。
 
 - 改行コードのデフォルトはCRLFではなくLFです。
-- フィールド数が不一致のレコードも読み取りが可能です。(エラーは出力されず、初期値のままになります。)
+- フィールド数が不一致のレコードもエラーなく読み取りが可能です。不足するフィールドはデフォルト値のままになります。
 
 ## 機能拡張
 
-フィールドのSerialize/Deserialzeをカスタマイズするためのインターフェースとして`ICsvFormatter<T>`、 `ICsvFormatterProvider`が提供されています。
+フィールドのシリアライズおよびデシリアライズをカスタマイズするためのインターフェースとして`ICsvFormatter<T>`と`ICsvFormatterProvider`が提供されています。
 
-型のSerialize/Deserialzeには`ICsvFormatter<T>`を使用します。例として`int`型をラップする構造体に対応したFormatterの実装を示します。
+カスタム型のシリアライズおよびデシリアライズには`ICsvFormatter<T>`を使用します。例として`int`型をラップする構造体に対応したFormatterの実装を示します。
 
 ```cs
 public struct Foo
@@ -234,10 +234,10 @@ public class CustomFormatterProvider : ICsvFormatterProvider
 }
 ```
 
-作成したFormatterProviderはCsvOptionsにセットできます。上の`CustomFormatterProvider`は`Foo`構造体にのみ対応したものであるため、標準のFormatterProviderである`StandardFormatterProvider`と組み合わせて使用します。
+上記の`CustomFormatterProvider`は`Foo`構造体にのみ対応しています。デフォルトの対応型も扱うには、`CompositeFormatterProvider`を使って`StandardFormatterProvider`と組み合わせ、`CsvOptions`に渡します。
 
 ```cs
-// CompositeFormatterProviderで複数のFormatterProviderをまとめたFormatterProviderを作成する
+// CompositeFormatterProviderで複数のFormatterProviderをまとめる
 var provider = CompositeFormatterProvider.Create(
     CustomFormatterProvider.Instance,
     StandardFormatterProvider.Instance
