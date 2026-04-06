@@ -85,7 +85,7 @@ The default supported types for fields and properties are `sbyte`, `byte`, `shor
 
 The class or struct passed to `CsvSerializer` should have the `[CsvObject]` attribute and the `partial` keyword.
 
-Only members with the `[Column]` attribute are serialized and deserialized. Public members must have either `[Column]` or `[IgnoreMember]`; otherwise the analyzer reports a compile error. Private members are ignored by default, but you can include them by adding `[Column]`.
+By default, only members with the `[Column]` attribute are serialized and deserialized. Public members must have either `[Column]` or `[IgnoreMember]`; otherwise the analyzer reports a compile error. Private members are ignored by default, but you can include them by adding `[Column]`.
 
 ```cs
 [CsvObject]

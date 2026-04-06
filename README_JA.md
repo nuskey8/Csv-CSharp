@@ -85,7 +85,7 @@ array = CsvSerializer.Deserialize<Person>(csvText);
 
 `CsvSerializer`に渡すclassまたはstructには`[CsvObject]`属性と`partial`キーワードを付加します。
 
-`[Column]`属性が付加されたメンバーのみがシリアライズおよびデシリアライズの対象になります。publicメンバーには`[Column]`または`[IgnoreMember]`が必須で、どちらもない場合はAnalyzerがコンパイルエラーを報告します。privateメンバーはデフォルトでは無視されますが、`[Column]`属性を付加することで対象に含めることができます。
+デフォルトでは、`[Column]`属性が付加されたメンバーのみがシリアライズおよびデシリアライズの対象になります。publicメンバーには`[Column]`または`[IgnoreMember]`が必須で、どちらもない場合はAnalyzerがコンパイルエラーを報告します。privateメンバーはデフォルトでは無視されますが、`[Column]`属性を付加することで対象に含めることができます。
 
 ```cs
 [CsvObject]
