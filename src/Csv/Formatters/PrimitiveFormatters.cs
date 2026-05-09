@@ -1,5 +1,20 @@
 namespace Csv.Formatters;
 
+public sealed class BoolFormatter : ICsvFormatter<bool>
+{
+    public static readonly BoolFormatter Instance = new();
+
+    public bool Deserialize(ref CsvReader reader)
+    {
+        return reader.ReadBoolean();
+    }
+
+    public void Serialize(ref CsvWriter writer, bool value)
+    {
+        writer.WriteBoolean(value);
+    }
+}
+
 public sealed class ByteFormatter : ICsvFormatter<byte>
 {
     public static readonly ByteFormatter Instance = new();

@@ -79,7 +79,7 @@ array = CsvSerializer.Deserialize<Person>(csvText);
 
 SerializeはUTF-8でエンコードされた`byte[]`を返すオーバーロードのほか、`Stream`や`IBufferWriter<byte>`を渡して書き込みを行うことも可能です。DeserializeはUTF-8バイト配列の`byte[]`を受け取るほか、`string`、`Stream`、`ReadOnlySequence<byte>`にも対応しています。
 
-フィールドに含める型は、デフォルトでは`sbyte`, `byte`, `short`, `ushort`, `int`, `uint`, `long`, `ulong`, `char`, `string`, `Enum`, `Nullable<T>`, `DateTime`, `TimeSpan`, `Guid`に対応しています。これ以外の型に対応したい場合は機能拡張のセクションを参照してください。
+フィールドに含める型は、デフォルトでは`bool`, `sbyte`, `byte`, `short`, `ushort`, `int`, `uint`, `long`, `ulong`, `char`, `string`, `Enum`, `Nullable<T>`, `DateTime`, `TimeSpan`, `Guid`に対応しています。これ以外の型に対応したい場合は機能拡張のセクションを参照してください。
 
 ## シリアライズ
 

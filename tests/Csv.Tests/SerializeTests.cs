@@ -227,6 +227,63 @@ Charles,17
 
         CollectionAssert.AreEqual(expected, actual);
     }
+    [Test]
+    public void Test_Serialize_Bool()
+    {
+        BoolRecord[] records = [
+            new() { Name = "Alex", Active = true, Verified = true },
+            new() { Name = "Bob", Active = false, Verified = null },
+        ];
+
+        var bytes = CsvSerializer.Serialize(records);
+        var str = Encoding.UTF8.GetString(bytes);
+
+        Assert.That(str, Is.EqualTo(
+@"Name,Active,Verified
+Alex,true,true
+Bob,false,"
+        ));
+    }
+
+    [Test]
+    public void Test_Deserialize_Bool()
+    {
+        var csv =
+@"Name,Active,Verified
+Alex,true,true
+Bob,false,false
+Charles,True,True
+Dave,False,False
+Eve,TRUE,TRUE
+Frank,FALSE,FALSE"u8;
+
+        BoolRecord[] actual = CsvSerializer.Deserialize<BoolRecord>(new ReadOnlySequence<byte>(csv.ToArray()));
+        BoolRecord[] expected = [
+            new() { Name = "Alex", Active = true, Verified = true },
+            new() { Name = "Bob", Active = false, Verified = false },
+            new() { Name = "Charles", Active = true, Verified = true },
+            new() { Name = "Dave", Active = false, Verified = false },
+            new() { Name = "Eve", Active = true, Verified = true },
+            new() { Name = "Frank", Active = false, Verified = false },
+        ];
+
+        CollectionAssert.AreEqual(expected, actual);
+    }
+
+    [Test]
+    public void Test_Deserialize_Bool_Nullable_Empty()
+    {
+        var csv =
+@"Name,Active,Verified
+Alex,true,"u8;
+
+        BoolRecord[] actual = CsvSerializer.Deserialize<BoolRecord>(new ReadOnlySequence<byte>(csv.ToArray()));
+        BoolRecord[] expected = [
+            new() { Name = "Alex", Active = true, Verified = null },
+        ];
+
+        CollectionAssert.AreEqual(expected, actual);
+    }
 }
 
 [CsvObject]
@@ -236,4 +293,15 @@ public partial record User
     public string? Name { get; set; }
     [Column(1)]
     public int Age { get; set; }
+}
+
+[CsvObject]
+public partial record BoolRecord
+{
+    [Column(0)]
+    public string? Name { get; set; }
+    [Column(1)]
+    public bool Active { get; set; }
+    [Column(2)]
+    public bool? Verified { get; set; }
 }

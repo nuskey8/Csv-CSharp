@@ -6,6 +6,7 @@ public sealed class StandardFormatterProvider : ICsvFormatterProvider
 
     StandardFormatterProvider()
     {
+        Cache<bool>.value = BoolFormatter.Instance;
         Cache<sbyte>.value = SByteFormatter.Instance;
         Cache<byte>.value = ByteFormatter.Instance;
         Cache<short>.value = Int16Formatter.Instance;
@@ -35,9 +36,9 @@ public sealed class StandardFormatterProvider : ICsvFormatterProvider
             goto RETURN;
         }
 
-        if (typeof(T).GetGenericTypeDefinition() == typeof(Nullable<>))
+        if (typeof(T).IsGenericType && typeof(T).GetGenericTypeDefinition() == typeof(Nullable<>))
         {
-            Cache<T>.value = (ICsvFormatter<T>)Activator.CreateInstance(typeof(NullableFormatter<>).MakeGenericType(typeof(T)))!;
+            Cache<T>.value = (ICsvFormatter<T>)Activator.CreateInstance(typeof(NullableFormatter<>).MakeGenericType(Nullable.GetUnderlyingType(typeof(T))!))!;
             goto RETURN;
         }
 
