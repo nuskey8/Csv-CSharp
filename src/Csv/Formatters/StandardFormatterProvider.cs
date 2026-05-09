@@ -15,6 +15,7 @@ public sealed class StandardFormatterProvider : ICsvFormatterProvider
         Cache<uint>.value = UInt32Formatter.Instance;
         Cache<long>.value = Int64Formatter.Instance;
         Cache<ulong>.value = UInt64Formatter.Instance;
+        Cache<char>.value = CharFormatter.Instance;
         Cache<string?>.value = StringFormatter.Instance;
         Cache<DateTime>.value = new DateTimeFormatter();
         Cache<TimeSpan>.value = new TimeSpanFormatter();

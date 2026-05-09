@@ -51,7 +51,9 @@ public readonly record struct CsvRow
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get
         {
-            return elements[document.columnCache[key]];
+            var index = document.columnCache[key];
+            if ((uint)index >= (uint)elements.Length) return default;
+            return elements[index];
         }
     }
 }

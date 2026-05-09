@@ -94,7 +94,8 @@ public ref partial struct CsvReader
         // TODO: optimize
 
         var str = ReadString();
-        if (str == null || str.Length != 1) CsvSerializationException.ThrowFailedEncoding();
+        if (str == null) return default;
+        if (str.Length != 1) CsvSerializationException.ThrowFailedEncoding();
         return str[0];
     }
 

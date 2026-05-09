@@ -19,6 +19,7 @@ public readonly struct CsvElement
 
     public T? GetValue<T>()
     {
+        if (document is null) return default;
         var reader = new CsvReader(sequence, document.options);
         return document.options.FormatterProvider.GetFormatterWithVarify<T>().Deserialize(ref reader);
     }

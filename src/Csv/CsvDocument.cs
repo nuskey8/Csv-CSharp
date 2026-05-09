@@ -56,18 +56,19 @@ public sealed class CsvDocument
                 if (reader.TryReadEndOfLine()) continue;
                 if (allowComments && reader.TrySkipComment(false)) continue;
 
-                var index = reader.Consumed;
-                var length = reader.SkipField();
-                elements.Add(new(this, index, length));
-
-                reader.TryReadSeparator(false);
-
-                if (reader.Remaining == 0 || reader.TryReadEndOfLine())
+                while (true)
                 {
-                    rows.Add(new(this, elements.AsSpan().ToArray()));
-                    elements.Clear();
-                    continue;
+                    var index = reader.Consumed;
+                    var length = reader.SkipField();
+                    elements.Add(new(this, index, length));
+
+                    if (!reader.TryReadSeparator(false)) break;
                 }
+
+                rows.Add(new(this, elements.AsSpan().ToArray()));
+                elements.Clear();
+
+                reader.TryReadEndOfLine();
             }
 
             this.rows = rows.AsSpan().ToArray();
