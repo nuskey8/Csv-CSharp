@@ -97,4 +97,18 @@ public class CsvWriterTests
         csvWriter.WriteBoolean(b);
         Assert.That(Encoding.UTF8.GetString(bufferWriter.WrittenSpan), Is.EqualTo(str));
     }
+
+    [Test]
+    [TestCase(double.MaxValue, "1.7976931348623157E+308", QuoteMode.None)]
+    [TestCase(double.MinValue, "-1.7976931348623157E+308", QuoteMode.None)]
+    [TestCase(double.MaxValue, "\"1.7976931348623157E+308\"", QuoteMode.All)]
+    [TestCase(double.MinValue, "\"-1.7976931348623157E+308\"", QuoteMode.All)]
+    public void Test_WriteDouble_MaxAndMinValue(double value, string expected, QuoteMode quoteMode)
+    {
+        var bufferWriter = new ArrayBufferWriter<byte>();
+        var csvWriter = new CsvWriter(bufferWriter, new() { QuoteMode = quoteMode });
+
+        csvWriter.WriteDouble(value);
+        Assert.That(Encoding.UTF8.GetString(bufferWriter.WrittenSpan), Is.EqualTo(expected));
+    }
 }

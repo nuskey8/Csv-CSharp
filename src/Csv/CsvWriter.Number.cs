@@ -234,9 +234,11 @@ partial struct CsvWriter
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void WriteDouble(double value)
     {
+        const int MaxLength = 24; // for writing double.MinValue (-1.7976931348623157E+308)
+
         if (options.QuoteMode == QuoteMode.All)
         {
-            var span = GetSpan(22);
+            var span = GetSpan(MaxLength + 2);
             span[0] = (byte)'"';
             if (!Utf8Formatter.TryFormat(value, span[1..], out var bytesWritten))
             {
@@ -247,7 +249,7 @@ partial struct CsvWriter
         }
         else
         {
-            var span = GetSpan(20);
+            var span = GetSpan(MaxLength);
             if (!Utf8Formatter.TryFormat(value, span, out var bytesWritten))
             {
                 CsvSerializationException.ThrowFailedEncoding(value);
