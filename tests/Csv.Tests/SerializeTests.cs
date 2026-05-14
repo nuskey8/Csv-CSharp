@@ -40,6 +40,92 @@ Charles,17"
     }
 
     [Test]
+    public void Test_Serialize_Stream_IEnumerable_Array()
+    {
+        User[] users = [
+            new() { Name = "Alex", Age = 21 },
+            new() { Name = "Bob", Age = 35 },
+            new() { Name = "Charles", Age = 17 }
+        ];
+        IEnumerable<User> values = users;
+        using var stream = new MemoryStream();
+
+        CsvSerializer.Serialize(stream, values);
+        var str = Encoding.UTF8.GetString(stream.ToArray());
+
+        Assert.That(str, Is.EqualTo(
+@"Name,Age
+Alex,21
+Bob,35
+Charles,17"
+        ));
+    }
+
+    [Test]
+    public void Test_Serialize_Stream_IEnumerable_List()
+    {
+        List<User> values = [
+            new() { Name = "Alex", Age = 21 },
+            new() { Name = "Bob", Age = 35 },
+            new() { Name = "Charles", Age = 17 }
+        ];
+        using var stream = new MemoryStream();
+
+        CsvSerializer.Serialize(stream, values);
+        var str = Encoding.UTF8.GetString(stream.ToArray());
+
+        Assert.That(str, Is.EqualTo(
+@"Name,Age
+Alex,21
+Bob,35
+Charles,17"
+        ));
+    }
+
+    [Test]
+    public void Test_Serialize_BufferWriter_IEnumerable_Array()
+    {
+        User[] users = [
+            new() { Name = "Alex", Age = 21 },
+            new() { Name = "Bob", Age = 35 },
+            new() { Name = "Charles", Age = 17 }
+        ];
+        IEnumerable<User> values = users;
+        var bufferWriter = new ArrayBufferWriter<byte>();
+
+        CsvSerializer.Serialize(bufferWriter, values);
+        var str = Encoding.UTF8.GetString(bufferWriter.WrittenSpan);
+
+        Assert.That(str, Is.EqualTo(
+@"Name,Age
+Alex,21
+Bob,35
+Charles,17"
+        ));
+    }
+
+    [Test]
+    public void Test_Serialize_BufferWriter_IEnumerable_List()
+    {
+        List<User> values = [
+            new() { Name = "Alex", Age = 21 },
+            new() { Name = "Bob", Age = 35 },
+            new() { Name = "Charles", Age = 17 }
+        ];
+        var bufferWriter = new ArrayBufferWriter<byte>();
+
+        CsvSerializer.Serialize(bufferWriter, values);
+        var str = Encoding.UTF8.GetString(bufferWriter.WrittenSpan);
+
+        Assert.That(str, Is.EqualTo(
+@"Name,Age
+Alex,21
+Bob,35
+Charles,17"
+        ));
+    }
+
+    [Test]
     public void Test_Serialize_WithQuote()
     {
         User[] users = [

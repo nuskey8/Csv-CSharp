@@ -56,9 +56,17 @@ public static partial class CsvSerializer
 
     public static void Serialize<T>(IBufferWriter<byte> bufferWriter, IEnumerable<T> values, CsvOptions? options = default)
     {
-        if (values is T[] array) Serialize<T>(bufferWriter, array.AsSpan(), options);
+        if (values is T[] array)
+        {
+            Serialize<T>(bufferWriter, array.AsSpan(), options);
+            return;
+        }
 #if NET5_0_OR_GREATER
-        if (values is List<T> list) Serialize<T>(bufferWriter, CollectionsMarshal.AsSpan(list), options);
+        if (values is List<T> list)
+        {
+            Serialize<T>(bufferWriter, CollectionsMarshal.AsSpan(list), options);
+            return;
+        }
 #endif
 
         options ??= DefaultOptions;
@@ -86,9 +94,17 @@ public static partial class CsvSerializer
 
     public static void Serialize<T>(Stream stream, IEnumerable<T> values, CsvOptions? options = default)
     {
-        if (values is T[] array) Serialize<T>(stream, array.AsSpan(), options);
+        if (values is T[] array)
+        {
+            Serialize<T>(stream, array.AsSpan(), options);
+            return;
+        }
 #if NET5_0_OR_GREATER
-        if (values is List<T> list) Serialize<T>(stream, CollectionsMarshal.AsSpan(list), options);
+        if (values is List<T> list)
+        {
+            Serialize<T>(stream, CollectionsMarshal.AsSpan(list), options);
+            return;
+        }
 #endif
 
         var writer = SharedBufferWriter.GetWriter();
